@@ -37,12 +37,12 @@ app.listen(8080, () => {
 });
 
 
-/*
-passport.use(new BasicStrategy((username, password, done) => {
+
+/*passport.use(new BasicStrategy((username, password, done) => {
   if (username.valueOf() === 'luis' && password.valueOf() === 'krowdy123') {
     done(null, true);
   } else {
     done(null, false);
   }
-}));
-*/
+}));*/
+
