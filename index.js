@@ -2,14 +2,24 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const passport = require('passport');
-const BasicStrategy = require('passport-http').BasicStrategy;
+const mongoose = require('mongoose');
+
 const logger = require('./api/utils/logger');
 const productRouter = require('./api/recursos/productos/productos.routes');
 const usuariosRouter = require('./api/recursos/usuarios/usuarios.routes');
 
 const authJWT = require('./api/libs/auth');
-const tokenValidate = require('./api/libs/token.validate')
+
 const app = express();
+
+
+mongoose.connect('mongodb://127.0.0.1:27017/training', { useNewUrlParser: true });
+mongoose.connection.on('error', (error) => {
+  logger.error(error);
+  logger.error('Fallo la conexion a mongodb');
+  process.exit(1);
+});
+
 
 app.use(bodyParser.json()); // IMPORTANTE!!!
 // stream: message => logger.info(message.trim())
@@ -26,7 +36,8 @@ app.use('/productos', productRouter);
 passport.use(authJWT);
 
 
-app.get('/', tokenValidate, (request, response) => {
+// passport.authenticate('jwt', { session: false });
+app.get('/',(request, response) => {
   logger.error('Se hizo peticion al /');
   response.send('Hello World');
 });
